@@ -53,7 +53,7 @@ final class BlogApiTests: XCTestCase {
             .expect(.json)                                  // media type
             .expect("content-length", ["81"])               // expect header
             .expect(UserTokenResponse.self) { content in    // expect content
-                token = content.value                       // retreive content
+                token = content.value                       // retrieve content
             }
             .test(.inMemory)                                // test in memory
 
