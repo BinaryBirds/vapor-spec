@@ -53,6 +53,7 @@ public final class Spec {
         self.headers.replaceOrAdd(name: name, value: value)
         return self
     }
+    
     ///set a buffer as the request body
     public func buffer(_ buffer: ByteBuffer) -> Self {
         self.buffer = buffer
@@ -99,6 +100,14 @@ public final class Spec {
     public func expect<T: Content>(_ contentType: T.Type, file: StaticString = #file, line: UInt = #line, closure: @escaping ((T) -> ()) = { _ in }) -> Self {
         self.expectations.append({ res in
             XCTAssertContent(contentType, res, file: file, line: line, closure)
+        })
+        return self
+    }
+
+    /// expect a byte buffer as a response
+    public func expect(file: StaticString = #file, line: UInt = #line, closure: @escaping ((XCTHTTPResponse) throws -> ()) = { _ in }) -> Self {
+        self.expectations.append({ res in
+            try closure(res)
         })
         return self
     }
