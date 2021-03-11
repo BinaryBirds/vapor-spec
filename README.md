@@ -8,7 +8,7 @@ Unit testing Vapor 4 applications through declarative specifications.
 Add the repository as a dependency:
 
 ```swift
-.package(url: "https://github.com/binarybirds/spec.git", from: "1.1.0"),
+.package(url: "https://github.com/binarybirds/spec.git", from: "1.2.0"),
 ```
 
 Add Spec to the target dependencies:
@@ -62,17 +62,3 @@ final class BlogApiTests: XCTestCase {
     }
 }
 ```
-
-
-## License
-
-[WTFPL](LICENSE) - Do what the fuck you want to.
-
-
-
-
-
-
-
-
-
