@@ -69,7 +69,10 @@ public final class Spec {
     }
     
     ///set a content as the request body
-    public func cookie(_ cookie: HTTPCookies) -> Self {
+    public func cookie(_ cookie: HTTPCookies?) -> Self {
+        guard let cookie = cookie else {
+            return self
+        }
         self.beforeRequests.append({ req in
             req.headers.cookie = cookie
         })
