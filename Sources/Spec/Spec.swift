@@ -16,8 +16,16 @@ public final class Spec {
     private var bearerToken: String? = nil
     private var headers: HTTPHeaders = [:]
     private var buffer: ByteBuffer? = nil
-    private var beforeRequest: (inout XCTHTTPRequest) throws -> () = { _ in }
+    private var beforeRequests: [(inout XCTHTTPRequest) throws -> ()] = []
     private var expectations: [(XCTHTTPResponse) throws -> ()] = []
+    
+    private func beforeRequest() -> (inout XCTHTTPRequest) throws -> () {
+        { [unowned self] req in
+            for item in beforeRequests {
+                try item(&req)
+            }
+        }
+    }
 
     internal init(name: String, app: Application) {
         self.name = name
@@ -61,10 +69,18 @@ public final class Spec {
     }
     
     ///set a content as the request body
+    public func cookie(_ cookie: HTTPCookies) -> Self {
+        self.beforeRequests.append({ req in
+            req.headers.cookie = cookie
+        })
+        return self
+    }
+
+    ///set a content as the request body
     public func body<T: Content>(_ body: T) -> Self {
-        self.beforeRequest = { req in
+        self.beforeRequests.append({ req in
             try req.content.encode(body)
-        }
+        })
         return self
     }
 
@@ -127,7 +143,7 @@ public final class Spec {
                   body: self.buffer,
                   file: file,
                   line: line,
-                  beforeRequest: self.beforeRequest,
+                  beforeRequest: self.beforeRequest(),
                   afterResponse: afterRequest)
     }
 }
