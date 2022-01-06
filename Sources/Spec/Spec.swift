@@ -88,7 +88,9 @@ public final class Spec {
     }
 
     ///expect a specific HTTPStatus
-    public func expect(_ status: HTTPStatus, file: StaticString = #file, line: UInt = #line) -> Self {
+    public func expect(_ status: HTTPStatus,
+                       file: StaticString = #file,
+                       line: UInt = #line) -> Self {
         self.expectations.append({ res in
             XCTAssertEqual(res.status, status, file: file, line: line)
         })
@@ -96,7 +98,10 @@ public final class Spec {
     }
 
     ///expect a specific header
-    public func expect(_ headerName: String, _ values: [String]? = nil, file: StaticString = #file, line: UInt = #line) -> Self {
+    public func expect(_ headerName: String,
+                       _ values: [String]? = nil,
+                       file: StaticString = #file,
+                       line: UInt = #line) -> Self {
         self.expectations.append({ res in
             XCTAssertTrue(res.headers.contains(name: headerName))
             if let expectedValues = values {
@@ -108,7 +113,9 @@ public final class Spec {
     }
 
     ///expect a specific HTTPMediaType
-    public func expect(_ mediaType: HTTPMediaType, file: StaticString = #file, line: UInt = #line) -> Self {
+    public func expect(_ mediaType: HTTPMediaType,
+                       file: StaticString = #file,
+                       line: UInt = #line) -> Self {
         self.expectations.append({ res in
             XCTAssertEqual(try XCTUnwrap(res.headers.contentType), mediaType, file: file, line: line)
         })
@@ -116,7 +123,10 @@ public final class Spec {
     }
 
     ///expect a specific Content type, the decoded content will be available in the closure block
-    public func expect<T: Content>(_ contentType: T.Type, file: StaticString = #file, line: UInt = #line, closure: @escaping ((T) -> ()) = { _ in }) -> Self {
+    public func expect<T: Content>(_ contentType: T.Type,
+                                   file: StaticString = #file,
+                                   line: UInt = #line,
+                                   closure: @escaping ((T) -> ()) = { _ in }) -> Self {
         self.expectations.append({ res in
             XCTAssertContent(contentType, res, file: file, line: line, closure)
         })
@@ -124,7 +134,9 @@ public final class Spec {
     }
 
     /// expect a byte buffer as a response
-    public func expect(file: StaticString = #file, line: UInt = #line, closure: @escaping ((XCTHTTPResponse) throws -> ()) = { _ in }) -> Self {
+    public func expect(file: StaticString = #file,
+                       line: UInt = #line,
+                       closure: @escaping ((XCTHTTPResponse) throws -> ()) = { _ in }) -> Self {
         self.expectations.append({ res in
             try closure(res)
         })
@@ -132,7 +144,9 @@ public final class Spec {
     }
 
     ///test the given spec using a test method (in memory or via a running server), default is in memory
-    public func test(_ method: Application.Method = .inMemory, file: StaticString = #file, line: UInt = #line) throws {
+    public func test(_ method: Application.Method = .inMemory,
+                     file: StaticString = #file,
+                     line: UInt = #line) throws {
         let afterRequest: (XCTHTTPResponse) throws -> () = { res in
             for expectation in self.expectations {
                 try expectation(res)
