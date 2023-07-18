@@ -1,21 +1,21 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 import PackageDescription
 
 let package = Package(
-    name: "spec",
+    name: "vapor-spec",
     platforms: [
-       .macOS(.v10_15)
+       .macOS(.v12),
     ],
     products: [
-        .library(name: "Spec", targets: ["Spec"]),
+        .library(name: "VaporSpec", targets: ["VaporSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.54.0")
+        .package(url: "https://github.com/vapor/vapor", from: "4.77.1")
     ],
     targets: [
-        .target(name: "Spec", dependencies: [
+        .target(name: "VaporSpec", dependencies: [
             .product(name: "XCTVapor", package: "vapor"),
         ]),
-        .testTarget(name: "SpecTests", dependencies: ["Spec"]),
+        .testTarget(name: "VaporSpecTests", dependencies: ["VaporSpec"]),
     ]
 )

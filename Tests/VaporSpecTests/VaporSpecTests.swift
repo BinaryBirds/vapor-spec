@@ -1,28 +1,3 @@
-# VaporSpec
-
-Unit testing [Vapor](https://github.com/vapor/vapor) applications through declarative specifications.
-
-## Install
-
-Add the repository as a dependency:
-
-```swift
-.package(url: "https://github.com/binarybirds/vapor-spec", from: "2.0.0"),
-```
-
-Add VaporSpec to the target dependencies:
-
-```swift
-.product(name: "VaporSpec", package: "vapor-spec"),
-```
-
-Update the packages and you are ready.
-
-## Usage example
-
-### Api
-
-```swift
 import XCTest
 @testable import VaporSpec
 
@@ -102,4 +77,3 @@ final class VaporSpecTests: XCTestCase {
             .test()
     }
 }
-```
